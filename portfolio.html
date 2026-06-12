@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MUNISH-OS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pink-bg:#f6b8c6;
+  --pink-bg2:#f7c2cf;
+  --grid:rgba(120,150,220,.30);
+  --navy:#2b2b52;
+  --navy2:#3a3a6a;
+  --cream:#f6f1e4;
+  --blue:#9db8e8;
+  --blue-d:#6f86d0;
+  --accent:#ff3d7f;
+  --accent2:#ff7aa8;
+  --green:#3ad17a;
+  --shadow:4px 4px 0 rgba(43,43,82,.9);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{
+  font-family:'VT323',monospace;
+  background:
+    linear-gradient(var(--grid) 1px,transparent 1px) 0 0/26px 26px,
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/26px 26px,
+    linear-gradient(160deg,var(--pink-bg),var(--pink-bg2));
+  color:var(--navy);
+  overflow:hidden;
+  -webkit-user-select:none;user-select:none;
+  image-rendering:pixelated;
+}
+.pixel{font-family:'Press Start 2P',monospace;}
+button{font-family:inherit;cursor:pointer;}
+
+/* ===== top brand ===== */
+#brand{position:fixed;top:14px;right:18px;text-align:right;z-index:5;color:var(--navy);}
+#brand .os{font-size:18px;letter-spacing:1px;}
+#brand .sub{font-size:18px;opacity:.75;margin-top:6px;}
+#brand .blink{color:var(--accent);}
+
+/* ===== desktop icons ===== */
+#desktop{position:fixed;inset:0;z-index:2;}
+#icons{position:absolute;top:22px;left:22px;display:grid;grid-template-columns:repeat(2,84px);gap:22px 28px;}
+.icon{width:84px;display:flex;flex-direction:column;align-items:center;gap:7px;background:none;border:none;color:var(--navy);}
+.icon .box{
+  width:58px;height:58px;background:var(--cream);
+  border:3px solid var(--navy);box-shadow:var(--shadow);
+  display:flex;align-items:center;justify-content:center;font-size:26px;
+  transition:transform .07s;
+}
+.icon:hover .box{transform:translate(-2px,-2px);box-shadow:6px 6px 0 rgba(43,43,82,.9);}
+.icon:active .box{transform:translate(2px,2px);box-shadow:1px 1px 0 rgba(43,43,82,.9);}
+.icon .lbl{font-size:18px;}
+.icon .box svg{width:40px;height:40px;display:block;}
+.smi{width:20px;height:20px;display:inline-flex;flex:none;}
+.smi svg{width:20px;height:20px;}
+
+/* ===== windows ===== */
+.win{
+  position:absolute;width:560px;max-width:94vw;background:var(--cream);
+  border:3px solid var(--navy);box-shadow:8px 8px 0 rgba(43,43,82,.55);
+  display:none;flex-direction:column;z-index:20;
+}
+.win.open{display:flex;}
+.win .title{
+  display:flex;align-items:center;gap:8px;
+  background:repeating-linear-gradient(90deg,var(--blue),var(--blue) 6px,#b3c8f0 6px,#b3c8f0 12px);
+  border-bottom:3px solid var(--navy);padding:7px 8px;cursor:grab;
+}
+.win .title .ic{width:18px;height:18px;display:inline-flex;flex:none;}
+.win .title .ic svg{width:18px;height:18px;}
+.win .title .tt{font-family:'Press Start 2P';font-size:10px;background:var(--cream);border:2px solid var(--navy);padding:4px 8px;}
+.win .title .sp{flex:1;}
+.win .title .btn{
+  width:24px;height:24px;background:var(--cream);border:2px solid var(--navy);
+  font-family:'Press Start 2P';font-size:9px;display:flex;align-items:center;justify-content:center;
+}
+.win .title .btn:hover{background:var(--accent2);}
+.win .body{padding:18px;overflow-y:auto;max-height:62vh;font-size:19px;line-height:1.45;}
+.win .body::-webkit-scrollbar{width:12px;}
+.win .body::-webkit-scrollbar-thumb{background:var(--navy);border:2px solid var(--cream);}
+
+h2.sec{font-family:'Press Start 2P';font-size:11px;color:var(--accent);margin:2px 0 12px;}
+h3.sub{font-family:'Press Start 2P';font-size:10px;color:var(--navy);margin:16px 0 6px;}
+.panel{background:#eaf0ff;border:2px solid var(--navy);padding:12px 14px;margin:10px 0;}
+.tag{display:inline-block;background:var(--navy);color:var(--cream);font-size:15px;padding:2px 8px;margin:3px 4px 0 0;}
+.muted{opacity:.7;font-size:17px;}
+a{color:var(--accent);text-decoration:none;border-bottom:2px dotted var(--accent);}
+a:hover{background:var(--accent);color:#fff;}
+ul{margin:6px 0 6px 20px;}
+li{margin:4px 0;}
+
+/* about header */
+.ab-head{display:flex;gap:16px;align-items:center;}
+.ab-pic{width:96px;height:96px;border:3px solid var(--navy);box-shadow:var(--shadow);image-rendering:auto;flex:none;}
+.ab-name{font-family:'Press Start 2P';font-size:16px;}
+.ab-role{color:var(--accent);font-size:18px;margin-top:8px;}
+.ab-loc{font-size:17px;margin-top:6px;}
+
+/* project card */
+.proj{border:2px solid var(--navy);background:#fff;margin:12px 0;padding:12px 14px;box-shadow:3px 3px 0 rgba(43,43,82,.3);}
+.proj .pt{font-family:'Press Start 2P';font-size:10px;color:var(--navy);line-height:1.5;}
+.proj .pl{margin:7px 0;font-size:16px;}
+.proj .pl a{margin-right:10px;}
+
+/* contact */
+.cbtn{display:flex;align-items:center;gap:12px;background:#eaf0ff;border:2px solid var(--navy);
+  padding:11px 14px;margin:9px 0;font-size:19px;box-shadow:3px 3px 0 rgba(43,43,82,.3);width:100%;text-align:left;color:var(--navy);}
+.cbtn:hover{background:var(--accent);color:#fff;}
+.cbtn .e{font-size:22px;}
+
+/* terminal */
+#term-body{background:#10101c;color:#7CFCB0;font-size:19px;padding:14px;max-height:62vh;min-height:340px;overflow-y:auto;line-height:1.4;}
+#term-body .pmpt{color:#ff7aa8;}
+#term-body .err{color:#ff6b6b;}
+#term-body .lk{color:#73b6ff;}
+#term-line{display:flex;gap:8px;align-items:center;}
+#term-in{background:none;border:none;color:#7CFCB0;font-family:'VT323';font-size:19px;outline:none;flex:1;caret-color:#7CFCB0;}
+
+/* game */
+#game-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;}
+#gcanvas{background:#10101c;border:3px solid var(--navy);image-rendering:pixelated;touch-action:none;max-width:100%;}
+.gbar{display:flex;gap:18px;font-family:'Press Start 2P';font-size:10px;}
+#gstart{font-family:'Press Start 2P';font-size:11px;padding:10px 16px;background:var(--accent);color:#fff;border:3px solid var(--navy);box-shadow:var(--shadow);}
+#gstart:active{transform:translate(2px,2px);box-shadow:1px 1px 0 rgba(43,43,82,.9);}
+.ghint{font-size:16px;opacity:.7;text-align:center;}
+
+/* 67s spawned when the avatar stomps */
+#floaters{position:fixed;inset:0;z-index:9;pointer-events:none;overflow:hidden;}
+.f67{position:absolute;font-family:'Press Start 2P',monospace;color:var(--accent);
+  text-shadow:2px 2px 0 rgba(255,255,255,.45);opacity:.95;will-change:transform,opacity;
+  transition:transform 2.4s cubic-bezier(.2,.6,.3,1), opacity 2.4s ease-out;}
+
+/* avatar (2D pixel character) */
+#avatar{position:fixed;bottom:46px;left:50%;width:66px;z-index:8;pointer-events:auto;cursor:pointer;transition:left .34s linear;}
+#avatar-sprite{width:66px;height:84px;transform-origin:50% 100%;animation:bob .5s steps(2) infinite;}
+#avatar-sprite svg{width:100%;height:100%;display:block;filter:drop-shadow(2px 3px 0 rgba(43,43,82,.35));}
+#avatar.stomping #avatar-sprite{animation:stomp .5s ease;}
+#avatar .bubble{
+  position:absolute;bottom:88px;left:50%;transform:translateX(-50%);white-space:nowrap;
+  background:var(--cream);border:2px solid var(--navy);padding:5px 9px;font-size:16px;box-shadow:2px 2px 0 rgba(43,43,82,.5);
+  opacity:0;transition:opacity .2s;pointer-events:none;}
+#avatar.say .bubble{opacity:1;}
+@keyframes bob{0%{transform:translateY(0)}100%{transform:translateY(-4px)}}
+@keyframes stomp{0%{transform:translateY(-9px) scaleY(1.04)}32%{transform:translateY(0) scaleY(.82) scaleX(1.12)}60%{transform:scaleY(.92)}100%{transform:scaleY(1)}}
+
+/* taskbar */
+#taskbar{position:fixed;left:0;right:0;bottom:0;height:42px;background:var(--blue);
+  border-top:3px solid var(--navy);display:flex;align-items:center;gap:8px;padding:0 8px;z-index:30;}
+#start{font-family:'Press Start 2P';font-size:11px;background:var(--cream);border:3px solid var(--navy);
+  padding:7px 12px;display:flex;align-items:center;gap:7px;box-shadow:2px 2px 0 rgba(43,43,82,.6);}
+#start:active{transform:translate(1px,1px);}
+#tasks{display:flex;gap:6px;flex:1;overflow:hidden;}
+.task{font-size:17px;background:var(--cream);border:2px solid var(--navy);padding:3px 10px;max-width:150px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.task.active{background:var(--accent2);}
+#clock{font-size:18px;background:var(--cream);border:2px solid var(--navy);padding:4px 9px;}
+
+/* start menu */
+#startmenu{position:fixed;left:8px;bottom:48px;width:230px;background:var(--cream);border:3px solid var(--navy);
+  box-shadow:6px 6px 0 rgba(43,43,82,.5);z-index:40;display:none;flex-direction:column;}
+#startmenu.open{display:flex;}
+#startmenu .sm-head{background:var(--accent);color:#fff;font-family:'Press Start 2P';font-size:10px;padding:10px;}
+#startmenu button{display:flex;gap:10px;align-items:center;background:none;border:none;padding:9px 12px;font-size:19px;color:var(--navy);text-align:left;border-top:1px solid #ddd;}
+#startmenu button:hover{background:var(--blue);}
+
+/* boot screen */
+#boot{position:fixed;inset:0;background:#10101c;color:#7CFCB0;z-index:200;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;font-size:20px;gap:18px;}
+#boot .logo{font-family:'Press Start 2P';font-size:22px;color:#ff7aa8;text-align:center;line-height:1.6;}
+#boot .bar{width:240px;height:20px;border:2px solid #7CFCB0;padding:2px;}
+#boot .fill{height:100%;width:0;background:#7CFCB0;transition:width .25s;}
+#boot .tip{font-size:17px;opacity:.7;}
+
+@media(max-width:760px){
+  #brand{top:8px;right:10px;}
+  #brand .os{font-size:14px;} #brand .sub{font-size:14px;}
+  #icons{grid-template-columns:repeat(4,1fr);gap:14px 6px;top:64px;left:10px;right:10px;width:auto;}
+  .icon{width:auto;} .icon .box{width:50px;height:50px;font-size:22px;} .icon .lbl{font-size:15px;}
+  .win{position:fixed!important;top:0!important;left:0!important;width:100vw!important;max-width:100vw;height:calc(100vh - 42px);}
+  .win .body{max-height:none;flex:1;}
+  .win .title{cursor:default;}
+  #avatar{width:52px;}
+  #avatar-sprite{width:52px;height:66px;}
+  #term-body,#game-wrap{max-height:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- BOOT -->
+<div id="boot">
+  <div class="logo">MUNISH-OS<br>v2.0</div>
+  <div class="bar"><div class="fill" id="bootfill"></div></div>
+  <div id="boottxt">booting kernel...</div>
+  <div class="tip">M.Sc. Data Science @ TU Dortmund</div>
+</div>
+
+<div id="brand">
+  <div class="os pixel">&#8628;/ MUNISH-OS</div>
+  <div class="sub">M.Sc. Data Science @ TU Dortmund <span class="blink">_</span></div>
+</div>
+
+<div id="desktop">
+  <div id="icons">
+    <button class="icon" data-win="about"><span class="box" data-icon="about"></span><span class="lbl">About Me</span></button>
+    <button class="icon" data-win="projects"><span class="box" data-icon="projects"></span><span class="lbl">Projects</span></button>
+    <button class="icon" data-win="experience"><span class="box" data-icon="experience"></span><span class="lbl">Experience</span></button>
+    <button class="icon" data-win="skills"><span class="box" data-icon="skills"></span><span class="lbl">Skills</span></button>
+    <button class="icon" data-win="education"><span class="box" data-icon="education"></span><span class="lbl">Education</span></button>
+    <button class="icon" data-win="contact"><span class="box" data-icon="contact"></span><span class="lbl">Contact</span></button>
+    <button class="icon" data-win="game"><span class="box" data-icon="game"></span><span class="lbl">Mini Game</span></button>
+    <button class="icon" data-win="terminal"><span class="box" data-icon="terminal"></span><span class="lbl">Terminal</span></button>
+  </div>
+</div>
+
+<!-- ===== ABOUT ===== -->
+<section class="win" id="win-about" style="top:90px;left:430px;">
+  <div class="title"><span class="ic" data-icon="about"></span><span class="tt">ABOUT_ME.EXE</span><span class="sp"></span><button class="btn mini">_</button><button class="btn close">X</button></div>
+  <div class="body">
+    <div class="ab-head">
+      <img class="ab-pic" src="{{AVATAR}}" alt="Munish">
+      <div>
+        <div class="ab-name">Munish Patwa</div>
+        <div class="ab-role">Data Scientist / ML Engineer</div>
+        <div class="ab-loc">&#128205; Dortmund, Germany</div>
+      </div>
+    </div>
+    <h3 class="sub">&gt; BIO.TXT</h3>
+    <div class="panel">M.Sc. Data Science student at TU Dortmund with hands-on experience building end-to-end ML systems:
+      RAG pipelines, multi-agent LLM apps, forecasting models, and computer vision. Comfortable with Python, LangGraph,
+      PyTorch, Docker &amp; CI/CD &mdash; and shipping models to production. Seeking <b>Werkstudent</b> roles in Data Science,
+      ML Engineering or Analytics (up to 20h/week).</div>
+    <h3 class="sub">&gt; FUN_FACTS.LOG</h3>
+    <ul>
+      <li>&#9654; &#127947; Gym rat &mdash; chasing PRs &amp; gains, then chasing model accuracy</li>
+      <li>&#9654; &#127916; Movie nights are sacred &mdash; sci-fi, thrillers &amp; anything with a twist</li>
+      <li>&#9654; &#127911; Runs on music &mdash; lo-fi for training loops, hard beats for debugging</li>
+      <li>&#9654; Speaks 4 languages: English C1, German A2, Hindi C1, Gujarati native</li>
+      <li>&#9654; B.Tech GPA 9.13/10 &mdash; lowkey built different, no cap</li>
+      <li>&#9654; Ships to production &amp; touches grass. Rare W. It's giving employable &#10024;</li>
+    </ul>
+    <div style="margin-top:14px"><a href="{{RESUME}}" download="Munish_Patwa_Resume.pdf">&#128190; Download Resume.pdf</a></div>
+  </div>
+</section>
+
+<!-- ===== PROJECTS ===== -->
+<section class="win" id="win-projects" style="top:70px;left:300px;width:600px;">
+  <div class="title"><span class="ic" data-icon="projects"></span><span class="tt">PROJECTS.DIR</span><span class="sp"></span><button class="btn mini">_</button><button class="btn close">X</button></div>
+  <div class="body">
+    <h2 class="sec">&gt; 5 SHIPPED PROJECTS</h2>
+
+    <div class="proj">
+      <div class="pt">Multi-Agent Research System</div>
+      <div class="pl muted">LangGraph &middot; RAG &middot; LLMs &middot; FastAPI</div>
+      <div class="pl">Live 5-agent autonomous research pipeline (Orchestrator, Researcher, Analyst, Writer, Critic) with a
+        critique-and-revise loop. Dual-mode Ollama/Groq backend + ChromaDB RAG over PDF/TXT/MD, multi-provider web search,
+        SQLite history, FastAPI REST.</div>
+      <div class="pl"><a href="https://multiagentresearchwithrag-munishpatwa.streamlit.app/" target="_blank">&#9658; Live Demo</a>
+        <a href="https://github.com/Munish0303/Multi_Agent_Research_With_RAG" target="_blank">&#9881; Code</a></div>
+      <div><span class="tag">LangGraph</span><span class="tag">RAG</span><span class="tag">ChromaDB</span><span class="tag">Groq</span><span class="tag">FastAPI</span></div>
+    </div>
+
+    <div class="proj">
+      <div class="pt">F1 Pit-Stop Timing Classifier</div>
+      <div class="pl muted">XGBoost &middot; SMOTE &middot; SHAP</div>
+      <div class="pl">Predicts whether an F1 driver pits next lap across 96,336 laps (2022&ndash;2024, OpenF1). ROC-AUC 0.979,
+        PR-AUC 0.787, 13 leakage-free features, temporal split, SHAP explainability, 6-step modular pipeline.</div>
+      <div class="pl"><a href="https://f1-pitstop-prediction-munish.streamlit.app/" target="_blank">&#9658; Live Demo</a>
+        <a href="https://github.com/Munish0303/F1-Pitstop-Prediction" target="_blank">&#9881; Code</a></div>
+      <div><span class="tag">XGBoost</span><span class="tag">SMOTE</span><span class="tag">SHAP</span><span class="tag">Feature Eng</span></div>
+    </div>
+
+    <div class="proj">
+      <div class="pt">YouTube Trending Dashboard</div>
+      <div class="pl muted">Python &middot; Pandas &middot; Power BI</div>
+      <div class="pl">End-to-end analytics cleaning 342,656 trending records across 10 countries (from 375,942 raw rows),
+        repairing Unicode mojibake with 0-null QA. 5-page interactive Power BI dashboard + live Streamlit gallery.</div>
+      <div class="pl"><a href="https://powerbiyoutubedashboard-munish.streamlit.app/" target="_blank">&#9658; Live Demo</a>
+        <a href="https://github.com/Munish0303/POWERBI_Youtube_Dashboard" target="_blank">&#9881; Code</a></div>
+      <div><span class="tag">Pandas</span><span class="tag">Power BI</span><span class="tag">EDA</span><span class="tag">ELT</span></div>
+    </div>
+
+    <div class="proj">
+      <div class="pt">FireWatch &mdash; Fire Detection</div>
+      <div class="pl muted">YOLOv8 &middot; Docker &middot; CI/CD</div>
+      <div class="pl">Real-time fire &amp; smoke detection at &lt;200ms latency (YOLOv8 on a custom 1,200-image set + IoT sensor
+        fusion). Dockerized, deployed via GitHub Actions on Vercel with AWS S3 storage and SMTP/Twilio alerts.</div>
+      <div class="pl"><a href="https://github.com/Munish0303/FireWatch" target="_blank">&#9881; Code</a></div>
+      <div><span class="tag">YOLOv8</span><span class="tag">CV</span><span class="tag">Docker</span><span class="tag">CI/CD</span><span class="tag">AWS S3</span></div>
+    </div>
+
+    <div class="proj">
+      <div class="pt">SQL Data Cleaning &mdash; Layoffs</div>
+      <div class="pl muted">MySQL &middot; CTEs &middot; Window Functions</div>
+      <div class="pl">Multi-step MySQL ELT pipeline cutting a 2,361-record dataset from ~15% duplicate/null to 0% using CTEs,
+        window functions &amp; self-joins; trend analysis with rolling totals &amp; dense ranking.</div>
+      <div class="pl"><a href="https://github.com/Munish0303/MySQL_Mini_Project" target="_blank">&#9881; Code</a></div>
+      <div><span class="tag">MySQL</span><span class="tag">CTEs</span><span class="tag">ELT</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXPERIENCE ===== -->
+<section class="win" id="win-experience" style="top:110px;left:360px;">
+  <div class="title"><span class="ic" data-icon="experience"></span><span class="tt">EXPERIENCE.LOG</span><span class="sp"></span><button class="btn mini">_</button><button class="btn close">X</button></div>
+  <div class="body">
+    <h2 class="sec">&gt; WORK HISTORY</h2>
+    <div class="panel">
+      <h3 class="sub" style="margin-top:0">AI/ML Engineer Intern</h3>
+      <div class="muted">Ascion Global Partners &middot; Remote &middot; Jan&ndash;May 2025</div>
+      <ul>
+        <li>Built a production NLP chatbot (3 intent categories) cutting avg guest query resolution time ~60%</li>
+        <li>Improved intent-classification F1 ~18% across 5+ classes with Scikit-Learn</li>
+        <li>Built a Matplotlib/Plotly EDA dashboard tracking usage, error rates &amp; prediction confidence</li>
+        <li>Designed an end-to-end ML pipeline: ingestion &rarr; feature eng &rarr; training &rarr; evaluation</li>
+      </ul>
+      <div><span class="tag">Python</span><span class="tag">NLP</span><span class="tag">Scikit-Learn</span><span class="tag">ETL</span></div>
+    </div>
+    <div class="panel">
+      <h3 class="sub" style="margin-top:0">Teaching Volunteer</h3>
+      <div class="muted">Karma Foundation &middot; Ahmedabad &middot; Jul&ndash;Aug 2022</div>
+      <ul><li>Delivered daily Math &amp; English sessions to 15+ students over a 2-week program; tracked progress in Excel</li></ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SKILLS ===== -->
+<section class="win" id="win-skills" style="top:90px;left:340px;width:600px;">
+  <div class="title"><span class="ic" data-icon="skills"></span><span class="tt">SKILLS.SYS</span><span class="sp"></span><button class="btn mini">_</button><button class="btn close">X</button></div>
+  <div class="body">
+    <h2 class="sec">&gt; LOADED MODULES</h2>
+    <h3 class="sub">Programming</h3>
+    <div><span class="tag">Python</span><span class="tag">SQL</span><span class="tag">R</span><span class="tag">TypeScript</span><span class="tag">JavaScript</span></div>
+    <h3 class="sub">ML / AI</h3>
+    <div><span class="tag">Scikit-Learn</span><span class="tag">XGBoost</span><span class="tag">PyTorch</span><span class="tag">TensorFlow</span><span class="tag">Keras</span><span class="tag">Deep Learning</span><span class="tag">NLP</span><span class="tag">Computer Vision</span><span class="tag">SHAP</span><span class="tag">Forecasting</span></div>
+    <h3 class="sub">LLM &amp; GenAI</h3>
+    <div><span class="tag">LangGraph</span><span class="tag">RAG</span><span class="tag">Multi-Agent</span><span class="tag">Ollama</span><span class="tag">Groq</span><span class="tag">ChromaDB</span><span class="tag">Hugging Face</span><span class="tag">Prompt Eng</span></div>
+    <h3 class="sub">Data &amp; Analytics</h3>
+    <div><span class="tag">Pandas</span><span class="tag">NumPy</span><span class="tag">PySpark</span><span class="tag">Power BI</span><span class="tag">Tableau</span><span class="tag">Matplotlib</span><span class="tag">Seaborn</span><span class="tag">Plotly</span><span class="tag">ETL/ELT</span></div>
+    <h3 class="sub">MLOps &amp; Cloud</h3>
+    <div><span class="tag">Docker</span><span class="tag">CI/CD</span><span class="tag">Kubernetes</span><span class="tag">AWS</span><span class="tag">GCP Vertex</span><span class="tag">FastAPI</span><span class="tag">Vercel</span><span class="tag">Git</span></div>
+    <h3 class="sub">Databases</h3>
+    <div><span class="tag">MySQL</span><span class="tag">PostgreSQL</span><span class="tag">Supabase</span></div>
+    <h3 class="sub">Languages</h3>
+    <div><span class="tag">English C1</span><span class="tag">German A2</span><span class="tag">Hindi C1</span><span class="tag">Gujarati Native</span></div>
+  </div>
+</section>
+
+<!-- ===== EDUCATION ===== -->
+<section class="win" id="win-education" style="top:120px;left:380px;">
+  <div class="title"><span class="ic" data-icon="education"></span><span class="tt">EDUCATION.DB</span><span class="sp"></span><button class="btn mini">_</button><button class="btn close">X</button></div>
+  <div class="body">
+    <h2 class="sec">&gt; ACADEMIC RECORD</h2>
+    <div class="panel">
+      <h3 class="sub" style="margin-top:0">M.Sc. Data Science</h3>
+      <div class="muted">TU Dortmund &middot; Germany &middot; Oct 2025 &ndash; Present</div>
+      <p>Machine Learning, Statistics, Data Mining, Predictive Modelling, Deep Learning</p>
+    </div>
+    <div class="panel">
+      <h3 class="sub" style="margin-top:0">B.Tech Computer Science &mdash; Big Data Analytics</h3>
+      <div class="muted">Ganpat University &middot; India &middot; May 2021 &ndash; May 2025 &middot; GPA 9.13/10</div>
+      <p>ML, Advanced Big Data Analytics, AI, DBMS, Cognitive Computing</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="win" id="win-contact" style="top:130px;left:420px;">
+  <div class="title"><span class="ic" data-icon="contact"></span><span class="tt">CONTACT.EXE</span><span class="sp"></span><button class="btn mini">_</button><button class="btn close">X</button></div>
+  <div class="body">
+    <h2 class="sec">&gt; GET IN TOUCH</h2>
+    <a class="cbtn" href="mailto:munishpatwa2003@gmail.com"><span class="e">&#9993;</span> munishpatwa2003@gmail.com</a>
+    <a class="cbtn" href="tel:+4915208243524"><span class="e">&#128241;</span> +49 152 08243524</a>
+    <a class="cbtn" href="https://github.com/Munish0303" target="_blank"><span class="e">&#128187;</span> github.com/Munish0303</a>
+    <a class="cbtn" href="https://www.linkedin.com/in/munish-patwa" target="_blank"><span class="e">&#128279;</span> LinkedIn &mdash; Munish Patwa</a>
+    <a class="cbtn" href="{{RESUME}}" download="Munish_Patwa_Resume.pdf"><span class="e">&#128190;</span> Download Resume.pdf</a>
+    <div class="muted" style="margin-top:8px">&#128205; Dortmund, Germany &middot; Open to Werkstudent / Hiwi roles in NRW</div>
+  </div>
+</section>
+
+<!-- ===== GAME ===== -->
+<section class="win" id="win-game" style="top:80px;left:380px;width:420px;">
+  <div class="title"><span class="ic" data-icon="game"></span><span class="tt">DATA_CATCH.GAME</span><span class="sp"></span><button class="btn mini">_</button><button class="btn close">X</button></div>
+  <div class="body">
+    <div id="game-wrap">
+      <div class="gbar"><span>SCORE <span id="gscore" style="color:var(--accent)">0</span></span><span>LIVES <span id="glives" style="color:var(--accent)">3</span></span><span>BEST <span id="gbest" style="color:var(--accent)">0</span></span></div>
+      <canvas id="gcanvas" width="320" height="380"></canvas>
+      <button id="gstart">&#9658; START</button>
+      <div class="ghint">Catch &#128202;&#128187;&#9749;&#129518; &mdash; dodge the bugs &#128027;<br>Move: &larr; &rarr; keys, mouse or drag</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TERMINAL ===== -->
+<section class="win" id="win-terminal" style="top:70px;left:330px;width:600px;">
+  <div class="title"><span class="ic" data-icon="terminal"></span><span class="tt">TERMINAL.SH</span><span class="sp"></span><button class="btn mini">_</button><button class="btn close">X</button></div>
+  <div id="term-body">
+    <div id="term-out"></div>
+    <div id="term-line"><span class="pmpt">munish@os:~$</span><input id="term-in" autocomplete="off" spellcheck="false"></div>
+  </div>
+</section>
+
+<!-- FLOATING 67s (brainrot) -->
+<div id="floaters"></div>
+
+<!-- AVATAR (2D pixel character) -->
+<div id="avatar" class="walk">
+  <div class="bubble">Hi, I'm Munish! &#128075;</div>
+  <div id="avatar-sprite"></div>
+</div>
+
+<!-- START MENU -->
+<div id="startmenu">
+  <div class="sm-head">MUNISH PATWA</div>
+  <button data-win="about"><span class="smi" data-icon="about"></span> About Me</button>
+  <button data-win="projects"><span class="smi" data-icon="projects"></span> Projects</button>
+  <button data-win="experience"><span class="smi" data-icon="experience"></span> Experience</button>
+  <button data-win="skills"><span class="smi" data-icon="skills"></span> Skills</button>
+  <button data-win="education"><span class="smi" data-icon="education"></span> Education</button>
+  <button data-win="contact"><span class="smi" data-icon="contact"></span> Contact</button>
+  <button data-win="game"><span class="smi" data-icon="game"></span> Mini Game</button>
+  <button data-win="terminal"><span class="smi" data-icon="terminal"></span> Terminal</button>
+</div>
+
+<!-- TASKBAR -->
+<div id="taskbar">
+  <button id="start"><span>&#9210;</span> START</button>
+  <div id="tasks"></div>
+  <div id="clock">--:--</div>
+</div>
+
+<script>
+/* ============== WINDOW MANAGER ============== */
+const titles={about:'ABOUT_ME.EXE',projects:'PROJECTS.DIR',experience:'EXPERIENCE.LOG',skills:'SKILLS.SYS',
+  education:'EDUCATION.DB',contact:'CONTACT.EXE',game:'DATA_CATCH.GAME',terminal:'TERMINAL.SH'};
+let z=20; const open=new Set();
+const tasksEl=document.getElementById('tasks');
+const isMobile=()=>window.innerWidth<=760;
+
+function renderTasks(){
+  tasksEl.innerHTML='';
+  open.forEach(id=>{
+    const b=document.createElement('button');
+    b.className='task'+(document.getElementById('win-'+id).classList.contains('open')?' active':'');
+    b.textContent=titles[id];
+    b.onclick=()=>{const w=document.getElementById('win-'+id);
+      if(w.classList.contains('open')&&!isMobile()){w.style.display='none';w.classList.remove('open');}
+      else{w.classList.add('open');w.style.display='flex';w.style.zIndex=++z;}
+      renderTasks();};
+    tasksEl.appendChild(b);
+  });
+}
+function openWin(id){
+  const w=document.getElementById('win-'+id);
+  w.classList.add('open');w.style.display='flex';w.style.zIndex=++z;
+  open.add(id);renderTasks();
+  if(id==='terminal'){termBoot();document.getElementById('term-in').focus();}
+  if(id==='game'){gameInit();}
+  if(isMobile()){ // mobile: only one window feel; keep others openable via taskbar
+  }
+}
+function closeWin(id){
+  const w=document.getElementById('win-'+id);
+  w.classList.remove('open');w.style.display='none';open.delete(id);renderTasks();
+  if(id==='game')gameStop();
+}
+function minWin(id){const w=document.getElementById('win-'+id);w.classList.remove('open');w.style.display='none';renderTasks();}
+
+document.querySelectorAll('.icon').forEach(b=>b.onclick=()=>openWin(b.dataset.win));
+document.querySelectorAll('#startmenu button').forEach(b=>b.onclick=()=>{openWin(b.dataset.win);toggleStart(false);});
+document.querySelectorAll('.win').forEach(w=>{
+  const id=w.id.replace('win-','');
+  w.querySelector('.close').onclick=()=>closeWin(id);
+  w.querySelector('.mini').onclick=()=>minWin(id);
+  w.addEventListener('mousedown',()=>{w.style.zIndex=++z;});
+});
+
+/* ============== DRAG ============== */
+document.querySelectorAll('.win .title').forEach(t=>{
+  const w=t.closest('.win');
+  let sx,sy,ox,oy,drag=false;
+  const down=e=>{if(isMobile())return;if(e.target.classList.contains('btn'))return;
+    drag=true;const p=e.touches?e.touches[0]:e;sx=p.clientX;sy=p.clientY;
+    const r=w.getBoundingClientRect();ox=r.left;oy=r.top;w.style.zIndex=++z;t.style.cursor='grabbing';
+    e.preventDefault();};
+  const move=e=>{if(!drag)return;const p=e.touches?e.touches[0]:e;
+    let nx=ox+p.clientX-sx,ny=oy+p.clientY-sy;
+    nx=Math.max(0,Math.min(nx,window.innerWidth-80));ny=Math.max(0,Math.min(ny,window.innerHeight-80));
+    w.style.left=nx+'px';w.style.top=ny+'px';};
+  const up=()=>{drag=false;t.style.cursor='grab';};
+  t.addEventListener('mousedown',down);window.addEventListener('mousemove',move);window.addEventListener('mouseup',up);
+});
+
+/* ============== START MENU + CLOCK ============== */
+const sm=document.getElementById('startmenu');
+function toggleStart(f){sm.classList.toggle('open',f===undefined?undefined:f);if(f===undefined)sm.classList.toggle('open');}
+document.getElementById('start').onclick=e=>{e.stopPropagation();sm.classList.toggle('open');};
+document.addEventListener('click',e=>{if(!sm.contains(e.target)&&e.target.id!=='start'&&!document.getElementById('start').contains(e.target))sm.classList.remove('open');});
+function tick(){const d=new Date();document.getElementById('clock').textContent=
+  String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
+tick();setInterval(tick,10000);
+
+/* ============== TERMINAL ============== */
+const out=document.getElementById('term-out'),inp=document.getElementById('term-in');
+let booted=false;const hist=[];let hi=0;
+function p(html,cls){const d=document.createElement('div');if(cls)d.className=cls;d.innerHTML=html;out.appendChild(d);
+  document.getElementById('term-body').scrollTop=1e9;}
+function termBoot(){if(booted)return;booted=true;
+  p("Welcome to <span style='color:#ff7aa8'>MUNISH-OS</span> terminal v2.0");
+  p("Type <span class='lk'>help</span> to see available commands.");p("");}
+const cmds={
+  help:()=>p("Commands: <span class='lk'>about skills projects experience education contact resume social neofetch whoami ls gym movies music 67 clear</span>"),
+  about:()=>p("Munish Patwa &mdash; Data Scientist / ML Engineer @ TU Dortmund.<br>Builds RAG pipelines, multi-agent LLM apps, forecasting & CV systems."),
+  whoami:()=>p("munish &mdash; M.Sc. Data Science student, NRW, Germany."),
+  skills:()=>p("Python, SQL, R, TS | PyTorch, XGBoost, Scikit-Learn | LangGraph, RAG, Groq, Ollama, ChromaDB | Docker, CI/CD, FastAPI, AWS, GCP"),
+  projects:()=>{p("1. Multi-Agent Research System  <span class='lk'>multiagentresearchwithrag-munishpatwa.streamlit.app</span>");
+    p("2. F1 Pit-Stop Classifier      <span class='lk'>f1-pitstop-prediction-munish.streamlit.app</span>");
+    p("3. YouTube Trending Dashboard  <span class='lk'>powerbiyoutubedashboard-munish.streamlit.app</span>");
+    p("4. FireWatch (YOLOv8)          <span class='lk'>github.com/Munish0303/FireWatch</span>");
+    p("5. SQL Layoffs Cleaning        <span class='lk'>github.com/Munish0303/MySQL_Mini_Project</span>");},
+  experience:()=>{p("AI/ML Engineer Intern @ Ascion Global Partners (Jan-May 2025)");p("Teaching Volunteer @ Karma Foundation (2022)");},
+  education:()=>{p("M.Sc. Data Science @ TU Dortmund (2025-present)");p("B.Tech CS - Big Data Analytics @ Ganpat Univ (GPA 9.13/10)");},
+  contact:()=>{p("email : munishpatwa2003@gmail.com");p("phone : +49 152 08243524");p("github: <span class='lk'>github.com/Munish0303</span>");},
+  social:()=>{p("github   : <span class='lk'>github.com/Munish0303</span>");p("linkedin : <span class='lk'>linkedin.com/in/munish-patwa</span>");},
+  resume:()=>{p("Opening resume... use the About or Contact window to download the PDF.");openWin('contact');},
+  ls:()=>p("about.txt  projects/  experience.log  skills.sys  education.db  contact.exe  game.run"),
+  neofetch:()=>{p("<span style='color:#ff7aa8'>      __        </span>  munish@munish-os");
+    p("<span style='color:#ff7aa8'>  ___ ( o)>      </span>  OS: MUNISH-OS v2.0");
+    p("<span style='color:#ff7aa8'>  \\__/| |        </span>  Role: Data Scientist / ML Engineer");
+    p("<span style='color:#ff7aa8'>   www  www      </span>  Edu: M.Sc. Data Science, TU Dortmund");
+    p("                  Langs: EN C1 | DE A2 | HI C1 | GU native");},
+  gym:()=>p("🏋️ Status: gains loading... chasing PRs in the gym AND on the leaderboard."),
+  movies:()=>p("🎬 Cinephile mode: ON. Plot twists > spoilers. It's giving absolute cinema 🍿"),
+  music:()=>p("🎧 Now playing: lo-fi for training loops, hard beats for debugging."),
+  '67':()=>{p("<span style='color:#ff7aa8'>6 7. 💀 you already know.</span>");
+    for(let i=0;i<3;i++)p("&nbsp;&nbsp;&nbsp;67 67 67 67 67 67 67 67 67");},
+  sudo:()=>p("nice try 😏 — you don't have rizz... I mean root.",'err'),
+  clear:()=>{out.innerHTML='';}
+};
+inp.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){const v=inp.value.trim();if(v){hist.push(v);hi=hist.length;}
+    p("<span class='pmpt'>munish@os:~$</span> "+v.replace(/</g,'&lt;'));
+    const c=v.toLowerCase();inp.value='';
+    if(!v){}else if(cmds[c])cmds[c]();
+    else p("command not found: "+c.replace(/</g,'&lt;')+" &mdash; try <span class='lk'>help</span>",'err');}
+  else if(e.key==='ArrowUp'){if(hi>0){hi--;inp.value=hist[hi]||'';}}
+  else if(e.key==='ArrowDown'){if(hi<hist.length-1){hi++;inp.value=hist[hi]||'';}else{hi=hist.length;inp.value='';}}
+});
+document.getElementById('term-body').onclick=()=>inp.focus();
+
+/* ============== MINI GAME: DATA CATCH ============== */
+const cv=document.getElementById('gcanvas'),cx=cv.getContext('2d');
+const W=cv.width,H=cv.height;
+let gstate={run:false,score:0,lives:3,px:W/2,items:[],spawn:0,best:+(localStorage.getItem('mp_best')||0)};
+document.getElementById('gbest').textContent=gstate.best;
+const GOOD=['📊','💻','☕','🤖','🐍','📈'],BAD=['🐛','🐞'];
+let raf=null,inited=false;
+function gameInit(){if(inited)return;inited=true;draw();}
+function gstart(){gstate={run:true,score:0,lives:3,px:W/2,items:[],spawn:0,best:gstate.best};
+  document.getElementById('gstart').textContent='▶ START';loop();}
+document.getElementById('gstart').onclick=gstart;
+function spawn(){const bad=Math.random()<0.28;
+  gstate.items.push({x:20+Math.random()*(W-40),y:-20,v:1.6+Math.random()*1.8+gstate.score*0.02,
+    e:bad?BAD[Math.floor(Math.random()*BAD.length)]:GOOD[Math.floor(Math.random()*GOOD.length)],bad});}
+function draw(){
+  cx.fillStyle='#10101c';cx.fillRect(0,0,W,H);
+  // stars
+  cx.fillStyle='rgba(124,252,176,.25)';for(let i=0;i<18;i++){cx.fillRect((i*53)%W,(i*37+(Date.now()/40))%H,2,2);}
+  // basket
+  cx.font='30px serif';cx.textAlign='center';cx.fillText('🧺',gstate.px,H-14);
+  cx.fillStyle='#7CFCB0';cx.fillRect(gstate.px-26,H-12,52,5);
+  // items
+  cx.font='26px serif';gstate.items.forEach(it=>cx.fillText(it.e,it.x,it.y));
+  if(!gstate.run){cx.fillStyle='rgba(16,16,28,.7)';cx.fillRect(0,H/2-46,W,92);
+    cx.fillStyle='#ff7aa8';cx.font="14px 'Press Start 2P',monospace";
+    cx.fillText(gstate.score>0?'GAME OVER':'DATA CATCH',W/2,H/2-8);
+    cx.fillStyle='#7CFCB0';cx.font="10px 'Press Start 2P',monospace";
+    cx.fillText(gstate.score>0?('SCORE '+gstate.score):'press START',W/2,H/2+18);}
+}
+function loop(){
+  if(!gstate.run){draw();return;}
+  gstate.spawn--;if(gstate.spawn<=0){spawn();gstate.spawn=Math.max(22,60-gstate.score);}
+  gstate.items.forEach(it=>it.y+=it.v);
+  // collision
+  gstate.items=gstate.items.filter(it=>{
+    if(it.y>H-26&&it.y<H-2&&Math.abs(it.x-gstate.px)<30){
+      if(it.bad){gstate.lives--;}else{gstate.score++;}
+      return false;}
+    if(it.y>H+20){if(!it.bad){/* missed good = ok */}return false;}
+    return true;});
+  document.getElementById('gscore').textContent=gstate.score;
+  document.getElementById('glives').textContent=gstate.lives;
+  if(gstate.lives<=0){gstate.run=false;
+    if(gstate.score>gstate.best){gstate.best=gstate.score;localStorage.setItem('mp_best',gstate.best);
+      document.getElementById('gbest').textContent=gstate.best;}
+    draw();return;}
+  draw();raf=requestAnimationFrame(loop);
+}
+function gameStop(){gstate.run=false;if(raf)cancelAnimationFrame(raf);}
+// controls
+document.addEventListener('keydown',e=>{if(!document.getElementById('win-game').classList.contains('open'))return;
+  if(e.key==='ArrowLeft'){gstate.px=Math.max(26,gstate.px-26);}
+  if(e.key==='ArrowRight'){gstate.px=Math.min(W-26,gstate.px+26);}
+  if((e.key==='ArrowLeft'||e.key==='ArrowRight')&&!gstate.run)draw();});
+function ptr(e){const r=cv.getBoundingClientRect();const cxp=(e.touches?e.touches[0].clientX:e.clientX)-r.left;
+  gstate.px=Math.max(26,Math.min(W-26,cxp*(W/r.width)));if(!gstate.run)draw();}
+cv.addEventListener('mousemove',e=>{if(e.buttons||gstate.run)ptr(e);});
+cv.addEventListener('mousedown',ptr);
+cv.addEventListener('touchstart',e=>{ptr(e);e.preventDefault();},{passive:false});
+cv.addEventListener('touchmove',e=>{ptr(e);e.preventDefault();},{passive:false});
+
+/* ============== PIXEL ICONS ============== */
+const ICONS={
+  about:['................','.....######.....','....##....##....','....#......#....','....#......#....','....##....##....','.....######.....','....########....','..##........##..','.#............#.','.#............#.','.##############.','................'],
+  projects:['................','..#####.........','.#.....#........','############....','#..........#....','#..oooooo..#....','#..........#....','#..oooooo..#....','#..........#....','#..........#....','############....','................','................'],
+  experience:['................','......####......','.....#....#.....','.....#....#.....','..############..','..#..........#..','..#...####...#..','..#...#oo#...#..','..#...####...#..','..#..........#..','..############..','................','................'],
+  skills:['................','...########.....','..##########....','...########.....','......##........','......##........','......##........','......##........','......##........','......##........','......##........','................','................'],
+  education:['................','.......##.......','.....######.....','...##########...','.##############.','...##########...','.....####.o.....','....#....#o.....','....#....#o.....','....######o.....','..........o.....','................','................'],
+  contact:['................','................','..############..','..#..........#..','..##........##..','..#.##....##.#..','..#...####...#..','..#..........#..','..#..........#..','..############..','................','................','................'],
+  game:['................','................','...##########...','..#..........#..','..#.#.....oo.#..','..###....o...#..','..#.#.....oo.#..','..#..........#..','...##########...','..#..........#..','................','................','................'],
+  terminal:['................','.##############.','.#............#.','.#.##.........#.','.#...##.......#.','.#.....##.....#.','.#...##.......#.','.#.##.........#.','.#......oooo..#.','.#............#.','.##############.','................','................']
+};
+function renderIcon(name){
+  const g=ICONS[name];if(!g)return'';const cols=g[0].length,rows=g.length;
+  let s=`<svg viewBox="0 0 ${cols} ${rows}" shape-rendering="crispEdges" preserveAspectRatio="xMidYMid meet">`;
+  for(let y=0;y<rows;y++){const r=g[y];for(let x=0;x<cols;x++){const c=r[x];
+    if(c==='#')s+=`<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="#2b2b52"/>`;
+    else if(c==='o')s+=`<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="#ff3d7f"/>`;}}
+  return s+'</svg>';
+}
+document.querySelectorAll('[data-icon]').forEach(e=>e.innerHTML=renderIcon(e.dataset.icon));
+
+/* ============== 2D PIXEL AVATAR ============== */
+const PAL={H:'#1f2230',S:'#e8b489',E:'#15161f',M:'#b5635f',J:'#3b3b4d',T:'#c24d6b',c:'#e6a6b6',P:'#3a4a7a',B:'#15151f'};
+const BODY=['................','.....HHHH.......','....HHHHHH......','...HHHHHHHH.....','...HSSSSSSH.....','...HSSSSSSH.....','...SSESSESS.....','...SSSSSSSS.....','...SSSMMSSS.....','....SSSSSS......','.....JTTJ.......','...JJTTTTJJ.....','..JJTTTTTTJJ....','..JTcTTTTcTJ....','..JTTTTTTTTJ....','...TTTTTTTT.....'];
+const LEGS_A=['...PPPPPPPP.....','...PPP..PPP.....','...PPP..PPP.....','..BBB....BBB....'];      // walk frame 1
+const LEGS_B=['...PPPPPPPP.....','...PPP..PPP.....','..PPP....PPP....','.BBB......BBB...'];      // walk frame 2
+const LEGS_S=['..PPPPPPPPPP....','..PPP....PPP....','.PPP......PPP...','BBBB......BBBB..'];      // stomp (planted wide)
+function buildAvatar(frame){
+  const legs = frame==='stomp'?LEGS_S : frame?LEGS_B:LEGS_A;
+  const g=BODY.concat(legs);
+  let s='<svg viewBox="0 0 16 20" shape-rendering="crispEdges">';
+  for(let y=0;y<g.length;y++)for(let x=0;x<16;x++){const ch=g[y][x];
+    if(PAL[ch])s+=`<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="${PAL[ch]}"/>`;}
+  return s+'</svg>';
+}
+
+/* ============== AVATAR: walk + stomp + spit 67 ============== */
+const av=document.getElementById('avatar');
+const sprite=document.getElementById('avatar-sprite');
+const floatLayer=document.getElementById('floaters');
+const quips=["Hi, I'm Munish! 👋","Try the Terminal 🖥️","Open Projects 📁","RAG + LLMs 🤖","It's giving employable ✨","lowkey built different","Catch some data! 📊","gym → code → repeat 🏋️","Werkstudent ready ✅","absolute cinema 🍿","TU Dortmund 🎓"];
+let ax=innerWidth*0.42, dir=1, af=0, stomping=false;
+av.style.left=ax+'px';
+sprite.innerHTML=buildAvatar(0);
+
+// leg animation (paused while stomping)
+setInterval(()=>{if(stomping)return;af^=1;sprite.innerHTML=buildAvatar(af);},230);
+
+// walking
+setInterval(()=>{
+  if(stomping)return;
+  ax+=dir*(16+Math.random()*12);
+  if(ax>innerWidth-80){dir=-1;ax=innerWidth-80;}
+  if(ax<14){dir=1;ax=14;}
+  av.style.left=ax+'px';
+  if(Math.random()<0.16) stomp();            // sometimes stop & stomp
+},360);
+
+function spawn67(){
+  const d=document.createElement('div');d.className='f67';
+  d.textContent=Math.random()<0.2?'6-7':'67';
+  d.style.fontSize=(18+Math.random()*18)+'px';
+  d.style.left=(ax+18+(Math.random()*24-12))+'px';
+  d.style.top=(innerHeight-118)+'px';
+  floatLayer.appendChild(d);
+  requestAnimationFrame(()=>{
+    d.style.transform=`translate(${Math.random()*70-35}px,-${130+Math.random()*150}px) rotate(${Math.random()*44-22}deg)`;
+    d.style.opacity='0';
+  });
+  setTimeout(()=>d.remove(),2500);
+}
+function stomp(){
+  if(stomping)return;stomping=true;
+  sprite.innerHTML=buildAvatar('stomp');
+  av.classList.add('stomping');
+  spawn67();
+  setTimeout(()=>{av.classList.remove('stomping');stomping=false;af=0;sprite.innerHTML=buildAvatar(0);},520);
+}
+av.onclick=()=>{av.querySelector('.bubble').textContent=quips[Math.floor(Math.random()*quips.length)];
+  av.classList.add('say');setTimeout(()=>av.classList.remove('say'),1800);stomp();};
+setTimeout(()=>{av.classList.add('say');setTimeout(()=>av.classList.remove('say'),2600);},1400);
+
+/* ============== BOOT ============== */
+const steps=['booting kernel...','mounting /skills...','loading projects...','starting MUNISH-OS...','ready.'];
+let bi=0;const bf=document.getElementById('bootfill'),bt=document.getElementById('boottxt');
+const bint=setInterval(()=>{bi++;bf.style.width=(bi/steps.length*100)+'%';
+  bt.textContent=steps[Math.min(bi,steps.length-1)];
+  if(bi>=steps.length){clearInterval(bint);setTimeout(()=>{
+    document.getElementById('boot').style.transition='opacity .4s';document.getElementById('boot').style.opacity=0;
+    setTimeout(()=>{document.getElementById('boot').style.display='none';
+      openWin('about');},420);},350);}},420);
+</script>
+</body>
+</html>
