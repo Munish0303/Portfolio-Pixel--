@@ -1,0 +1,7 @@
+# Vercel serves the prebuilt static index.html — these aren't needed there
+app.py
+portfolio.html
+build_standalone.py
+requirements.txt
+.streamlit
+__pycache__
