@@ -3,6 +3,8 @@
 An interactive, retro pixel-desktop portfolio for **Munish Patwa** (M.Sc. Data Science, TU Dortmund).
 A fake operating system with draggable windows, a working terminal, a mini-game, and an idle avatar.
 
+**▶ Live site: [portfolio-pixel-hazel.vercel.app](https://portfolio-pixel-hazel.vercel.app)**
+
 ## Features
 - 🖥️ Boot screen → pixel desktop with icons & taskbar (live clock + START menu)
 - 🪟 **Draggable windows** (desktop) / full-screen panels (mobile): About, Projects, Experience, Skills, Education, Contact
