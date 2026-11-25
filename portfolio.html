@@ -254,8 +254,80 @@ li{margin:4px 0;}
 <section class="win" id="win-projects" style="top:70px;left:300px;width:600px;">
   <div class="title"><span class="ic" data-icon="projects"></span><span class="tt">PROJECTS.DIR</span><span class="sp"></span><button class="btn mini">_</button><button class="btn close">X</button></div>
   <div class="body">
-    <h2 class="sec">&gt; PROJECTS &middot; 14 REPOS</h2>
+    <h2 class="sec">&gt; PROJECTS &middot; 21 REPOS</h2>
     <div class="muted" style="margin:-6px 0 10px">Everything I've shipped &mdash; live on <a href="https://github.com/Munish0303" target="_blank">github.com/Munish0303</a></div>
+
+    <div class="proj">
+      <div class="pt">Rollout-Agent &mdash; LLM Agents for Network Rollout</div>
+      <div class="pl muted">Next.js &middot; TypeScript &middot; Groq &middot; Tool Calling</div>
+      <div class="pl">AI agents and workflow automation for a mobile-network rollout company. Hand-written ReAct tool loop
+        (no framework) with 7 tools: site database, BM25 RAG over SOPs and live Open-Meteo weather checks. A 5-step inbox
+        pipeline goes from LLM classification and JSON extraction to RAG, a drafted reply, guardrails and human approval.
+        The eval harness compares 3 LLMs with a rule-based baseline on accuracy, tool choice, latency and token cost.</div>
+      <div class="pl"><a href="https://rolloutagent.vercel.app" target="_blank">&#9658; Live Demo</a>
+        <a href="https://github.com/Munish0303/Rollout_Agent" target="_blank">&#9881; Code</a></div>
+      <div><span class="tag">AI Agents</span><span class="tag">Tool Calling</span><span class="tag">RAG</span><span class="tag">LLM Evals</span><span class="tag">Next.js</span></div>
+    </div>
+
+    <div class="proj">
+      <div class="pt">Stadtwerk AI Copilot &mdash; Energy Analytics</div>
+      <div class="pl muted">Next.js &middot; Forecasting &middot; Optimisation &middot; LLM</div>
+      <div class="pl">Energy analytics for German municipal utilities. Live EPEX day-ahead prices and a merit-order view,
+        72h PV/wind forecasts with capture rates, and weather-driven ridge-regression load forecasting with back-tests and
+        anomaly detection. A dynamic-programming battery-arbitrage business case (NPV, payback) runs on real prices. The LLM
+        copilot is grounded in each dashboard's KPIs and writes management briefings.</div>
+      <div class="pl"><a href="https://stadtwerk-ai.vercel.app" target="_blank">&#9658; Live Demo</a>
+        <a href="https://github.com/Munish0303/Stadtwerk_Energy" target="_blank">&#9881; Code</a></div>
+      <div><span class="tag">Energy</span><span class="tag">Forecasting</span><span class="tag">Dynamic Prog</span><span class="tag">LLM Copilot</span><span class="tag">TypeScript</span></div>
+    </div>
+
+    <div class="proj">
+      <div class="pt">ISA-88 Plant Knowledge Graph</div>
+      <div class="pl muted">Neo4j &middot; Cypher &middot; MQTT &middot; TimescaleDB &middot; React</div>
+      <div class="pl">Knowledge graph of a batch plant built on the ISA-88 physical and procedural models. It answers
+        cross-system questions (lot traceability, alarm and fault analysis, device history, sensor drift) as graph
+        traversals in milliseconds, work that takes hours across MES, ERP, historian and CMMS. The web app runs the graph
+        (267 nodes, 880 relationships) in the browser. The full stack is a Docker pipeline: simulated edge, MQTT Unified
+        Namespace, TimescaleDB, Neo4j. Design decisions are documented as ADRs.</div>
+      <div class="pl"><a href="https://isa-88-knowledge-graph.vercel.app/" target="_blank">&#9658; Live Demo</a>
+        <a href="https://github.com/Munish0303/ISA88_Knowledge_Graph" target="_blank">&#9881; Web App</a>
+        <a href="https://github.com/Munish0303/OT_Digitalization_KnowledgeGraph" target="_blank">&#9881; Full Stack</a></div>
+      <div><span class="tag">Neo4j</span><span class="tag">Knowledge Graph</span><span class="tag">OT/IT</span><span class="tag">MQTT</span><span class="tag">Docker</span></div>
+    </div>
+
+    <div class="proj">
+      <div class="pt">Motor Insurance Pricing &mdash; GLM vs GBM</div>
+      <div class="pl muted">Python &middot; GLM &middot; LightGBM &middot; Streamlit</div>
+      <div class="pl">End-to-end actuarial pricing on freMTPL2 (678k policies, 26k claims). Poisson frequency and Gamma
+        severity GLMs are combined into a multiplicative rating table and benchmarked against LightGBM (pure-premium Gini
+        0.319 vs 0.313). A rate-change impact dashboard simulates the tariff migration with off-balancing, capping, lapses
+        and loss ratio by segment.</div>
+      <div class="pl"><a href="https://github.com/Munish0303/Accurial_Pricing" target="_blank">&#9881; Code</a></div>
+      <div><span class="tag">GLM</span><span class="tag">LightGBM</span><span class="tag">Actuarial</span><span class="tag">Streamlit</span></div>
+    </div>
+
+    <div class="proj">
+      <div class="pt">F&amp;F Property Graph &mdash; Fragrance Processes</div>
+      <div class="pl muted">Neo4j &middot; Cypher &middot; Next.js</div>
+      <div class="pl">Neo4j data model for flavour &amp; fragrance manufacturing: ingredients, processes, parameters and
+        ingredient interactions (synergy, fixatives, incompatibilities). Comes with a Bloom-style explorer with search,
+        click-to-expand, a no-code pattern builder and a read-only Cypher box. It runs on Neo4j Aura behind bounded,
+        write-gated API routes and falls back to a built-in sample graph if the database is unreachable.</div>
+      <div class="pl"><a href="https://fragnance-processes-neo4j.vercel.app" target="_blank">&#9658; Live Demo</a>
+        <a href="https://github.com/Munish0303/Fragnance_Processes_Neo4j" target="_blank">&#9881; Code</a></div>
+      <div><span class="tag">Neo4j</span><span class="tag">Graph Modelling</span><span class="tag">Cypher</span><span class="tag">Next.js</span></div>
+    </div>
+
+    <div class="proj">
+      <div class="pt">Bayesian Polynomial Chaos Surrogates</div>
+      <div class="pl muted">MATLAB &middot; Bayesian Inference &middot; UQ</div>
+      <div class="pl">Fast surrogates of expensive simulations that report how far to trust them. PCE coefficients get a
+        Bayesian treatment (evidence-maximised smoothness prior and sparse ARD). Experiments cover sample efficiency,
+        calibration of error bars, Sobol sensitivities and failure probabilities with uncertainty, and the value of prior
+        knowledge. Plain MATLAB, no toolboxes.</div>
+      <div class="pl"><a href="https://github.com/Munish0303/Bayesian_PCE_Surrogate" target="_blank">&#9881; Code</a></div>
+      <div><span class="tag">Bayesian</span><span class="tag">Surrogates</span><span class="tag">Sobol</span><span class="tag">MATLAB</span></div>
+    </div>
 
     <div class="proj">
       <div class="pt">Multi-Agent Research System</div>
@@ -612,15 +684,21 @@ const cmds={
   about:()=>p("Munish Patwa &mdash; Data Scientist / ML Engineer @ TU Dortmund.<br>Builds RAG pipelines, multi-agent LLM apps, forecasting & CV systems."),
   whoami:()=>p("munish &mdash; M.Sc. Data Science student, NRW, Germany."),
   skills:()=>p("Python, SQL, R, TS | PyTorch, XGBoost, Scikit-Learn | LangGraph, RAG, Groq, Ollama, ChromaDB | Docker, CI/CD, FastAPI, AWS, GCP"),
-  projects:()=>{p("1. Multi-Agent Research System  <span class='lk'>multiagentresearchwithrag-munishpatwa.streamlit.app</span>");
-    p("2. F1 Pit-Stop Classifier      <span class='lk'>f1-pitstop-prediction-munish.streamlit.app</span>");
-    p("3. YouTube Trending Dashboard  <span class='lk'>powerbiyoutubedashboard-munish.streamlit.app</span>");
-    p("4. FireWatch (YOLOv8)          <span class='lk'>github.com/Munish0303/FireWatch</span>");
-    p("5. Werkstudent Job Matcher     <span class='lk'>github.com/Munish0303/n8n-jobsearcher</span>");
-    p("6. Text-to-SQL                 <span class='lk'>text-2-sql-eta.vercel.app</span>");
-    p("7. Germanator (DE learning)    <span class='lk'>germanator-wb.vercel.app</span>");
-    p("8. SQL Layoffs / Olist / Tableau / SBI / DAI / 8X-Hackathon");
-    p("...all 14 repos: <span class='lk'>github.com/Munish0303</span>");},
+  projects:()=>{p("1. Rollout-Agent (LLM agents)   <span class='lk'>rolloutagent.vercel.app</span>");
+    p("2. Stadtwerk AI Copilot        <span class='lk'>stadtwerk-ai.vercel.app</span>");
+    p("3. ISA-88 Knowledge Graph      <span class='lk'>isa-88-knowledge-graph.vercel.app</span>");
+    p("4. Multi-Agent Research System <span class='lk'>multiagentresearchwithrag-munishpatwa.streamlit.app</span>");
+    p("5. Motor Insurance Pricing     <span class='lk'>github.com/Munish0303/Accurial_Pricing</span>");
+    p("6. F&amp;F Property Graph (Neo4j) <span class='lk'>fragnance-processes-neo4j.vercel.app</span>");
+    p("7. Bayesian PCE Surrogates     <span class='lk'>github.com/Munish0303/Bayesian_PCE_Surrogate</span>");
+    p("8. F1 Pit-Stop Classifier      <span class='lk'>f1-pitstop-prediction-munish.streamlit.app</span>");
+    p("9. YouTube Trending Dashboard  <span class='lk'>powerbiyoutubedashboard-munish.streamlit.app</span>");
+    p("10. FireWatch (YOLOv8)         <span class='lk'>fire-watch-kohl.vercel.app</span>");
+    p("11. Werkstudent Job Matcher    <span class='lk'>github.com/Munish0303/n8n-jobsearcher</span>");
+    p("12. Text-to-SQL                <span class='lk'>text-2-sql-eta.vercel.app</span>");
+    p("13. Germanator (DE learning)   <span class='lk'>germanator-wb.vercel.app</span>");
+    p("14. SQL Layoffs / Olist / Tableau / SBI / DAI / 8X-Hackathon");
+    p("...all 21 repos: <span class='lk'>github.com/Munish0303</span>");},
   experience:()=>{p("AI/ML Engineer Intern @ Ascion Global Partners (Jan-May 2025)");p("BI & Data Analytics Intern @ A2Z Infra Solutions (Jul-Dec 2024)");},
   education:()=>{p("M.Sc. Data Science @ TU Dortmund (2025-present)");p("B.Tech CS - Big Data Analytics @ Ganpat Univ (GPA 9.13/10)");},
   contact:()=>{p("email : munishpatwa2003@gmail.com");p("phone : +49 152 08243524");p("github: <span class='lk'>github.com/Munish0303</span>");},
